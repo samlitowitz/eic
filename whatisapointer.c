@@ -97,22 +97,15 @@ int main(int argc, char** argv) {
     char d;
   };
   /*
-    In program space memory could be layed out as follows.
-    
-    0 0 0 0  0 X X X  0 0 0 0  0 X X X 
-    int a    char b   int c    char d
+    The ordering of variables in a memory for structures are guarenteed, however non-bit-field members 
+    are subject to alignment which depends on the compiler. What this means for us is as that both of
+    the following are possible.
 
-    The memory layout is not guarenteed in any manner.
-    What this means to you is that \code{A->a} is guarenteed at compile time to point to the value of a.
-    You could be potentially try to access the value of a as follows, \code{*(A + 0)}.
-    Memory layout is not guarenteed.
+    0000    0X      0000    0X
+    int a   char b  int c   char d
 
-    Therefore, another compiler could end up with the following as the layout
-
-    0 X X X  0 X X X  0 0 0 0  0 0 0 0
-    char b   char d   int a    int c
-
-    Now \code{*(A + 0)} accesses an undefined value.  
+    0000    0XXX    0000    0XXX
+    int a   char b  int c   char d
   */
 
   struct S *s = malloc(1 * sizeof(struct S));
